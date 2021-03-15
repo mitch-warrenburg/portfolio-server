@@ -9,5 +9,5 @@ metadata:
     app: portfolio-server
 spec:
   backend:
-    serviceName: portfolio-server-service
     servicePort: 8080
+    serviceName: portfolio-server-service

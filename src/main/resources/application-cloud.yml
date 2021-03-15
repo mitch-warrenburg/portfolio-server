@@ -1,0 +1,6 @@
+spring:
+  rabbitmq:
+    host: 34.94.76.234
+    username: admin
+    password: brogrammermatter
+

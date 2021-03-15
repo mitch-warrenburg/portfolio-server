@@ -18,5 +18,18 @@ spec:
       containers:
         - name: portfolio-server-container
           image: gcr.io/warrenburg-portfolio/portfolio-server:latest
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              port: 8080
+              path: /actuator/health
+          livenessProbe:
+            periodSeconds: 15
+            httpGet:
+              port: 8080
+              path: /actuator/health
           ports:
             - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: cloud
