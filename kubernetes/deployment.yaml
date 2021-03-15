@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio-server
+  namespace: portfolio
+  labels:
+    app: portfolio-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: portfolio-server
+  template:
+    metadata:
+      labels:
+        app: portfolio-server
+    spec:
+      containers:
+        - name: portfolio-server-container
+          image: gcr.io/warrenburg-portfolio/portfolio-server:latest
+          ports:
+            - containerPort: 8080
