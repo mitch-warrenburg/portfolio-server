@@ -1,0 +1,13 @@
+version: '3'
+services:
+  portfolio:
+    container_name: portfolio-client
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        EMAIL_API_KEY: ${EMAIL_API_KEY}
+    ports:
+      - 8080:8080

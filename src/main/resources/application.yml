@@ -12,3 +12,10 @@ server:
   http2.enabled: true
   compression.enabled: true
 
+rabbit:
+  key: chat.key
+  queue: chat.queue
+  exchange: chat.exchange
+
+email:
+  address: frank@em6169.mitch.engineering

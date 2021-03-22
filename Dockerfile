@@ -1,17 +1,19 @@
 FROM adoptopenjdk:11-jdk-openj9 as build
+
 WORKDIR /workspace/app
 
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle .
-RUN ./gradlew dependencies --stacktrace
+COPY gradlew build.gradle ./
+COPY src src/
+COPY gradle gradle/
 
-COPY src src
-
-RUN ./gradlew build -x test --stacktrace
+RUN ./gradlew clean build --max-workers 20 --parallel --console rich --info -x test --stacktrace
 RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
 
 FROM adoptopenjdk:11-jdk-openj9
+
+ARG EMAIL_API_KEY
+ENV EMAIL_API_KEY=${EMAIL_API_KEY}
+
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/build/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib

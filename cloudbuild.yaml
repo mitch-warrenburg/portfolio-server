@@ -1,70 +1,45 @@
 steps:
   - name: gcr.io/cloud-builders/docker
-    args:
-      - build
-      - '-t'
-      - '$_IMAGE_NAME:$COMMIT_SHA'
-      - .
-      - '-f'
-      - $_DOCKERFILE_NAME
-    dir: $_DOCKERFILE_DIR
-    id: Build
+    id: Build Image
+    entrypoint: 'bash'
+    args: [ '-c', 'docker build -t $_IMAGE:$COMMIT_SHA -t $_IMAGE:latest --build-arg EMAIL_API_KEY=$$EMAIL_API_KEY .' ]
+    secretEnv: [ 'EMAIL_API_KEY' ]
   - name: gcr.io/cloud-builders/docker
-    args:
-      - push
-      - '$_IMAGE_NAME:$COMMIT_SHA'
-    id: Push
+    id: Push Image
+    args: [ push, '$_IMAGE:$COMMIT_SHA' ]
   - name: gcr.io/cloud-builders/gke-deploy
+    id: Prepare GKE deployment
     args:
       - prepare
-      - '--filename=$_K8S_YAML_PATH'
-      - '--image=$_IMAGE_NAME:$COMMIT_SHA'
-      - '--app=$_K8S_APP_NAME'
+      - '--filename=$_K8S_PATH'
+      - '--image=$_IMAGE:$COMMIT_SHA'
+      - '--app=$_APP'
       - '--version=$COMMIT_SHA'
-      - '--namespace=$_K8S_NAMESPACE'
-      - '--label=$_K8S_LABELS'
+      - '--namespace=$_NAMESPACE'
       - '--annotation=$_K8S_ANNOTATIONS,gcb-build-id=$BUILD_ID'
       - '--create-application-cr'
-      - >-
-        --links="Build
-        details=https://console.cloud.google.com/cloud-build/builds/$BUILD_ID?project=$PROJECT_ID"
       - '--output=output'
-    id: Prepare deploy
-  - name: gcr.io/cloud-builders/gsutil
-    args:
-      - '-c'
-      - |-
-        if [ "$_OUTPUT_BUCKET_PATH" != "" ]
-        then
-          gsutil cp -r output/suggested gs://$_OUTPUT_BUCKET_PATH/config/$_K8S_APP_NAME/$BUILD_ID/suggested
-          gsutil cp -r output/expanded gs://$_OUTPUT_BUCKET_PATH/config/$_K8S_APP_NAME/$BUILD_ID/expanded
-        fi
-    id: Save configs
-    entrypoint: sh
   - name: gcr.io/cloud-builders/gke-deploy
+    id: Apply GKE deployment
     args:
       - apply
       - '--filename=output/expanded'
-      - '--cluster=$_GKE_CLUSTER'
-      - '--location=$_GKE_LOCATION'
-      - '--namespace=$_K8S_NAMESPACE'
-    id: Apply deploy
+      - '--cluster=$_CLUSTER'
+      - '--location=$_REGION'
+      - '--namespace=$_NAMESPACE'
 images:
-  - '$_IMAGE_NAME:$COMMIT_SHA'
+  - '$_IMAGE:$COMMIT_SHA'
 options:
   substitutionOption: ALLOW_LOOSE
 substitutions:
+  _IMAGE: gcr.io/warrenburg-portfolio/portfolio-server
+  _K8S_PATH: kubernetes/
+  _APP: portfolio-server
+  _REGION: us-central1
+  _NAMESPACE: portfolio
+  _CLUSTER: portfolio
   _OUTPUT_BUCKET_PATH: warrenburg-portfolio_cloudbuild/deploy
-  _K8S_LABELS: ''
-  _K8S_YAML_PATH: kubernetes/app/
-  _DOCKERFILE_DIR: ''
-  _K8S_APP_NAME: portfolio-server
-  _GKE_LOCATION: us-west2
-  _IMAGE_NAME: gcr.io/warrenburg-portfolio/github.com/mitch-warrenburg/portfolio-server
-  _K8S_NAMESPACE: portfolio
-  _DOCKERFILE_NAME: Dockerfile
-  _K8S_ANNOTATIONS: gcb-trigger-id=8f017d72-9d13-4bf5-a3fa-cde8c1a3f5b5
-  _GKE_CLUSTER: portfolio-cluster
-tags:
-  - gcp-cloud-build-deploy
-  - $_K8S_APP_NAME
+availableSecrets:
+  secretManager:
+    - versionName: projects/warrenburg-portfolio/secrets/EMAIL_API_KEY/versions/latest
+      env: EMAIL_API_KEY
