@@ -18,4 +18,10 @@ rabbit:
   exchange: chat.exchange
 
 email:
-  address: frank@em6169.mitch.engineering
+  api-key: mock-api-key
+  sender:
+    name: Portfolio Inquiry
+    address: sender@mock-domain.com
+  recipient:
+    name: Philip N. Ossem
+    address: recipient@mock-domain.com
