@@ -27,18 +27,19 @@ public class EmailService {
   private static final String EMAIL_BODY_FORMAT = "%s: %s";
   private static final String EMAIL_SUBJECT_FORMAT = "Company: %s\nName: %s\nEmail: %s\nPhone: %s\n\n\n%s";
 
-  private final Email senderEmail;
   private final SendGrid sendGrid;
+  private final Email senderEmail;
+  private final Email recipientEmail;
 
   public EmailResponse sendEmail(EmailRequest emailRequest) {
 
-    val email = trimAllWhitespace(emailRequest);
-    val subject = format(EMAIL_BODY_FORMAT, email.getCompany(), email.getName());
-    val emailBody = format(EMAIL_SUBJECT_FORMAT, email.getCompany(), email.getName(), email.getAddress(), email.getPhoneNumber(), email.getContent());
+    val request = trimAllWhitespace(emailRequest);
+    val subject = format(EMAIL_BODY_FORMAT, request.getCompany(), request.getName());
+    val body = format(EMAIL_SUBJECT_FORMAT, request.getCompany(), request.getName(), request.getAddress(), request.getPhoneNumber(), request.getContent());
 
     try {
 
-      val response = sendGrid.api(buildRequest(email.getAddress(), subject, emailBody));
+      val response = sendGrid.api(buildRequest(request, subject, body));
 
       log.info("Successfully sent email. [status]: {}", response.getStatusCode());
 
@@ -52,17 +53,26 @@ public class EmailService {
     }
   }
 
-  private Request buildRequest(String email, String subject, String content) {
+  private Request buildRequest(EmailRequest emailRequest, String subject, String body) {
 
     try {
+      val userCC = new Personalization();
+      val userEmail = new Email(emailRequest.getAddress(), emailRequest.getName());
+      val mail = new Mail(senderEmail, subject, recipientEmail, new Content(CONTENT_TYPE, body));
+
+      userCC.addCc(userEmail);
+      userCC.setSubject(subject);
+      userCC.addTo(recipientEmail);
+      mail.setReplyTo(recipientEmail);
+      mail.addPersonalization(userCC);
+
       val request = new Request();
-      val mail = new Mail(senderEmail, subject, new Email(email), new Content(CONTENT_TYPE, content));
 
       request.setMethod(POST);
       request.setEndpoint(ENDPOINT);
       request.setBody(mail.build());
-      return request;
 
+      return request;
     } catch (IOException e) {
       throw new EmailCreationException(e);
     }

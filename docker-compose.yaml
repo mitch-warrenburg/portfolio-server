@@ -9,5 +9,9 @@ services:
       dockerfile: Dockerfile
       args:
         EMAIL_API_KEY: ${EMAIL_API_KEY}
+        EMAIL_SENDER_NAME: ${EMAIL_SENDER_NAME}
+        EMAIL_SENDER_ADDRESS: ${EMAIL_SENDER_ADDRESS}
+        EMAIL_RECIPIENT_NAME: ${EMAIL_RECIPIENT_NAME}
+        EMAIL_RECIPIENT_ADDRESS: ${EMAIL_RECIPIENT_ADDRESS}
     ports:
       - 8080:8080

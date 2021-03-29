@@ -3,6 +3,7 @@ package com.mw.portfolio.config.email;
 import com.sendgrid.Email;
 import com.sendgrid.SendGrid;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +20,13 @@ public class EmailConfig {
 
   @Bean
   public Email senderEmail() {
-    return new Email(properties.getAddress());
+    val sender = properties.getSender();
+    return new Email(sender.getAddress(), sender.getName());
+  }
+
+  @Bean
+  public Email recipientEmail() {
+    val recipient = properties.getRecipient();
+    return new Email(recipient.getAddress(), recipient.getName());
   }
 }
