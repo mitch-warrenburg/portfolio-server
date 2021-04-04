@@ -38,4 +38,5 @@ out/
 
 
 *.log*
-*.env
+email.env
+key.json

@@ -1,7 +1,26 @@
 spring:
+  session:
+    store-type: redis
+    redis:
+      flush-mode: immediate
+      namespace: portfolio:session
+    servlet:
+      filter-order: 999999
   application.name: portfolio-server
   main.banner-mode: off
   output.ansi.enabled: always
+  flyway.clean-on-validation-error: true
+  jpa:
+    show-sql: false
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    username: admin
+    password: admin
+    url: jdbc:postgresql://localhost:5432/portfolio-db
 management:
   endpoint.health:
     enabled: true
@@ -11,12 +30,10 @@ management:
 server:
   http2.enabled: true
   compression.enabled: true
-
-rabbit:
-  key: chat.key
-  queue: chat.queue
-  exchange: chat.exchange
-
+feign:
+  compression:
+    request.enabled: true
+    response.useGzipDecoder: true
 email:
   api-key: mock-api-key
   sender:
@@ -25,3 +42,6 @@ email:
   recipient:
     name: Philip N. Ossem
     address: recipient@mock-domain.com
+logging.level:
+  org.springframework.session: TRACE
+  org.springframework.security: TRACE

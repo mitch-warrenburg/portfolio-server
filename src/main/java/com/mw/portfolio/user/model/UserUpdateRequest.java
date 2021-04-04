@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnonymousUser {
+public class UserUpdateRequest {
 
-  private String sessionId;
-  private String name;
+  private String uid;
   private String email;
-  private String phoneNumber;
+  private String company;
+  private String username;
 }
