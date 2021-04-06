@@ -1,19 +1,25 @@
 package com.mw.portfolio.user.service;
 
+import static com.mw.portfolio.security.model.PrincipalRole.ROLE_ANONYMOUS;
+import static com.mw.portfolio.security.model.PrincipalRole.ROLE_USER;
+
 import com.mw.portfolio.security.model.FirebaseUserDetails;
 import com.mw.portfolio.user.entity.User;
 import com.mw.portfolio.user.model.UserUpdateRequest;
 import com.mw.portfolio.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import lombok.val;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Mono;
 
 import javax.persistence.EntityNotFoundException;
 
+@Log4j2
 @Service
 @Transactional
 @AllArgsConstructor
@@ -21,25 +27,42 @@ public class UserService {
 
   private final UserRepository userRepository;
 
-  public User getUser(String uid) {
+  @PreAuthorize("#uid == authentication.name")
+  public User getUser(@P("uid") String uid) {
     return userRepository.findByUid(uid)
         .orElseThrow(EntityNotFoundException::new);
   }
 
   @PreAuthorize("#request.uid == authentication.name")
-  public Mono<User> updateUser(@P("request") UserUpdateRequest request) {
+  public User updateUser(@P("request") UserUpdateRequest request) {
 
     val user = getUser(request.getUid());
 
-    return Mono.just(userRepository.save(user.toBuilder()
+    return userRepository.saveAndFlush(user.toBuilder()
+        .role(ROLE_USER)
         .email(request.getEmail())
         .company(request.getCompany())
         .username(request.getUsername())
-        .build()));
+        .build());
+  }
+
+  @PreAuthorize("#user.uid == authentication.name")
+  public void persistUser(@P("user") User user) {
+    userRepository.save(user);
+  }
+
+  public GrantedAuthority getUserAuthorityRole(String uid) {
+    val role = userRepository.getUserRole(uid)
+        .orElse(ROLE_ANONYMOUS);
+
+    return new SimpleGrantedAuthority(role.toString());
   }
 
   public void createUserIfNotPresent(FirebaseUserDetails userDetails) {
     if (!userRepository.existsByUid(userDetails.getUid())) {
+
+      log.info("User not found.  Saving new authenticated user record. [uid]: {}", userDetails.getUid());
+
       userRepository.saveAndFlush(User.builder()
           .uid(userDetails.getUid())
           .phoneNumber(userDetails.getPhoneNumber())

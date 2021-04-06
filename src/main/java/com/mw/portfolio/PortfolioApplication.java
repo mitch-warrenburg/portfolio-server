@@ -1,5 +1,6 @@
 package com.mw.portfolio;
 
+import static com.mw.portfolio.util.KeyFileUtil.writeGcpKeyFile;
 import static java.util.TimeZone.getTimeZone;
 
 import com.mw.portfolio.config.email.EmailProperties;
@@ -25,6 +26,7 @@ public class PortfolioApplication {
 
   public static void main(String[] args) {
     TimeZone.setDefault(getTimeZone("America/Los_Angeles"));
+    writeGcpKeyFile();
     SpringApplication.run(PortfolioApplication.class, args);
   }
 

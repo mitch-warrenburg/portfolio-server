@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EmailResponse {
   private int status;
+  private int emailCount;
   private String message;
 }

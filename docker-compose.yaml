@@ -20,8 +20,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./key.json:/app/key.json
     environment:
-      SPRING_PROFILES_ACTIVE: docker-compose
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/portfolio-db
+
 
 volumes:
   postgres-data:

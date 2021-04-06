@@ -1,6 +1,7 @@
 package com.mw.portfolio.security.model;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,15 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Data
-@With
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 public class FirebaseAuthentication implements Authentication, CredentialsContainer, Serializable {
 
-  private String token;
-  private String cookie;
-  private boolean isNewSession;
+  private String credentials;
   private boolean authenticated;
 
   @Singular
@@ -48,8 +46,6 @@ public class FirebaseAuthentication implements Authentication, CredentialsContai
 
   @Override
   public void eraseCredentials() {
-    this.setDetails(null);
-    this.getAuthorities().clear();
-    this.setAuthenticated(false);
+    setCredentials(null);
   }
 }

@@ -4,12 +4,11 @@ spring:
     redis:
       flush-mode: immediate
       namespace: portfolio:session
-    servlet:
-      filter-order: 999999
   application.name: portfolio-server
   main.banner-mode: off
   output.ansi.enabled: always
   flyway.clean-on-validation-error: true
+  autoconfigure.exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
   jpa:
     show-sql: false
     open-in-view: false
@@ -21,6 +20,7 @@ spring:
     username: admin
     password: admin
     url: jdbc:postgresql://localhost:5432/portfolio-db
+
 management:
   endpoint.health:
     enabled: true
@@ -42,6 +42,3 @@ email:
   recipient:
     name: Philip N. Ossem
     address: recipient@mock-domain.com
-logging.level:
-  org.springframework.session: TRACE
-  org.springframework.security: TRACE

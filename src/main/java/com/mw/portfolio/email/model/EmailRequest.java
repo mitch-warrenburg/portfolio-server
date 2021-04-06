@@ -17,17 +17,11 @@ import javax.validation.constraints.NotBlank;
 public class EmailRequest {
 
   @NotBlank
-  private String name;
+  private String uid;
 
   @Email
-  private String address;
-
-  @NotBlank
-  private String company;
+  private String email;
 
   @NotBlank
   private String content;
-
-  @Builder.Default
-  private String phoneNumber = "";
 }
