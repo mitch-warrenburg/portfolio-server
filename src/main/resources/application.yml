@@ -30,10 +30,6 @@ management:
 server:
   http2.enabled: true
   compression.enabled: true
-feign:
-  compression:
-    request.enabled: true
-    response.useGzipDecoder: true
 email:
   api-key: mock-api-key
   sender:
@@ -42,3 +38,10 @@ email:
   recipient:
     name: Philip N. Ossem
     address: recipient@mock-domain.com
+security:
+  admin:
+    uid: admin
+    password: admin
+  system:
+    uid: system
+    password: system

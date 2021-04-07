@@ -1,4 +1,4 @@
-CREATE TYPE principal_role AS ENUM ('ROLE_USER', 'ROLE_ANONYMOUS');
+CREATE TYPE principal_role AS ENUM ('ROLE_USER', 'ROLE_ANONYMOUS', 'ROLE_ADMIN', 'ROLE_SYSTEM');
 CREATE TABLE authenticated_user
 (
     id           SERIAL PRIMARY KEY,
@@ -9,6 +9,7 @@ CREATE TABLE authenticated_user
     phone_number TEXT,
     email_count  SMALLINT           DEFAULT 0,
     "role"       principal_role     DEFAULT 'ROLE_ANONYMOUS',
+    password     TEXT,
     created_by   TEXT      NOT NULL DEFAULT 'SYSTEM',
     modified_by  TEXT,
     created_ts   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -41,6 +41,9 @@ public class User extends AuditedEntity<String> implements Serializable {
   @Builder.Default
   private PrincipalRole role = ROLE_ANONYMOUS;
 
+  @JsonIgnore
+  private String password;
+
   private String email;
   private String company;
   private String username;

@@ -48,7 +48,7 @@ public class EmailService {
       val response = sendGrid.api(buildRequest(user, request, subject, body));
       user.setEmail(request.getEmail());
       user.setEmailCount(user.getEmailCount() + 1);
-      userService.persistUser(user);
+      userService.persistAuthorizedUser(user);
 
       log.info("Successfully sent email. [status]: {} [uid]: {}", response.getStatusCode(), user.getUid());
 
@@ -88,7 +88,7 @@ public class EmailService {
   }
 
   private User getUser(String uid) {
-    val user = userService.getUser(uid);
+    val user = userService.getAuthorizedUser(uid);
 
     if (user.getEmailCount() >= MAX_EMAIL_COUNT) {
       throw new MaxEmailCountException(format("Maximum email count reach for user.  A user may send no more than %s emails.", MAX_EMAIL_COUNT));

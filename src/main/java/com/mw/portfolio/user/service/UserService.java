@@ -28,7 +28,11 @@ public class UserService {
   private final UserRepository userRepository;
 
   @PreAuthorize("#uid == authentication.name")
-  public User getUser(@P("uid") String uid) {
+  public User getAuthorizedUser(@P("uid") String uid) {
+    return getUser(uid);
+  }
+
+  public User getUser(String uid) {
     return userRepository.findByUid(uid)
         .orElseThrow(EntityNotFoundException::new);
   }
@@ -47,7 +51,11 @@ public class UserService {
   }
 
   @PreAuthorize("#user.uid == authentication.name")
-  public void persistUser(@P("user") User user) {
+  public void persistAuthorizedUser(@P("user") User user) {
+    saveUser(user);
+  }
+
+  public void saveUser(User user) {
     userRepository.save(user);
   }
 
@@ -68,5 +76,9 @@ public class UserService {
           .phoneNumber(userDetails.getPhoneNumber())
           .build());
     }
+  }
+
+  public boolean doesUserExist(String uid) {
+    return userRepository.existsByUid(uid);
   }
 }

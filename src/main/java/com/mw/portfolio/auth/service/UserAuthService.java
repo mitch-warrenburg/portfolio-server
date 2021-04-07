@@ -16,6 +16,6 @@ public class UserAuthService {
 
   public User getAuthenticatedUser() {
     val authenticatedUser =  (FirebaseAuthentication) SecurityContextHolder.getContext().getAuthentication();
-    return userService.getUser(authenticatedUser.getDetails().getUid());
+    return userService.getAuthorizedUser(authenticatedUser.getDetails().getUid());
   }
 }

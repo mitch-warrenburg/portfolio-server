@@ -17,7 +17,7 @@ public class AuthController {
 
   @PostMapping
   @PostAuthorize("principal == returnObject.phoneNumber")
-  public User authenticateUser() {
+  public User getAuthenticatedUser() {
     return authService.getAuthenticatedUser();
   }
 }
