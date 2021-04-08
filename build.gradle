@@ -29,8 +29,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    implementation 'org.springframework.session:spring-session-data-redis'
-//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // other
@@ -71,7 +69,7 @@ dockerCompose {
 
 task runPostgres(type: Exec) {
     workingDir rootDir
-    commandLine 'docker-compose', 'run', '-d', '--service-ports', 'postgres', 'postgres'
+    commandLine 'docker-compose', 'run', '-d', '--service-ports', 'postgres'
 }
 
 test { useJUnitPlatform() }

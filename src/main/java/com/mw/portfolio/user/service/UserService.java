@@ -1,7 +1,6 @@
 package com.mw.portfolio.user.service;
 
-import static com.mw.portfolio.security.model.PrincipalRole.ROLE_ANONYMOUS;
-import static com.mw.portfolio.security.model.PrincipalRole.ROLE_USER;
+import static com.mw.portfolio.security.model.PrincipalRole.*;
 
 import com.mw.portfolio.security.model.FirebaseUserDetails;
 import com.mw.portfolio.user.entity.User;
@@ -80,5 +79,9 @@ public class UserService {
 
   public boolean doesUserExist(String uid) {
     return userRepository.existsByUid(uid);
+  }
+
+  public User getDefaultChatUser() {
+    return userRepository.findFirstByRole(ROLE_ADMIN);
   }
 }

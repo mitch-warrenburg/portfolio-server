@@ -2,8 +2,8 @@ steps:
   - name: gcr.io/cloud-builders/docker
     id: Build Image
     entrypoint: 'bash'
-    args: [ '-c', 'docker build -t $_IMAGE:$COMMIT_SHA -t $_IMAGE:latest --build-arg EMAIL_API_KEY="$$EMAIL_API_KEY" --build-arg EMAIL_SENDER_NAME="$$EMAIL_SENDER_NAME" --build-arg EMAIL_SENDER_ADDRESS="$$EMAIL_SENDER_ADDRESS" --build-arg EMAIL_RECIPIENT_NAME="$$EMAIL_RECIPIENT_NAME" --build-arg EMAIL_RECIPIENT_ADDRESS="$$EMAIL_RECIPIENT_ADDRESS" .' ]
-    secretEnv: [ 'EMAIL_API_KEY', 'EMAIL_SENDER_NAME', 'EMAIL_SENDER_ADDRESS', 'EMAIL_RECIPIENT_NAME', 'EMAIL_RECIPIENT_ADDRESS' ]
+    args: [ '-c', 'docker build -t $_IMAGE:$COMMIT_SHA -t $_IMAGE:latest --build-arg EMAIL_API_KEY="$$EMAIL_API_KEY" --build-arg EMAIL_SENDER_NAME="$$EMAIL_SENDER_NAME" --build-arg EMAIL_SENDER_ADDRESS="$$EMAIL_SENDER_ADDRESS" --build-arg EMAIL_RECIPIENT_NAME="$$EMAIL_RECIPIENT_NAME" --build-arg EMAIL_RECIPIENT_ADDRESS="$$EMAIL_RECIPIENT_ADDRESS" --build-arg SECURITY_ADMIN_UID="$$SECURITY_ADMIN_UID" --build-arg SECURITY_ADMIN_USERNAME="$$SECURITY_ADMIN_USERNAME" .' ]
+    secretEnv: [ 'EMAIL_API_KEY', 'EMAIL_SENDER_NAME', 'EMAIL_SENDER_ADDRESS', 'EMAIL_RECIPIENT_NAME', 'EMAIL_RECIPIENT_ADDRESS', 'SECURITY_ADMIN_UID', 'SECURITY_ADMIN_USERNAME' ]
   - name: gcr.io/cloud-builders/docker
     id: Push Image
     args: [ push, '$_IMAGE:$COMMIT_SHA' ]
@@ -51,3 +51,8 @@ availableSecrets:
       env: EMAIL_RECIPIENT_NAME
     - versionName: projects/warrenburg-portfolio/secrets/EMAIL_RECIPIENT_ADDRESS/versions/latest
       env: EMAIL_RECIPIENT_ADDRESS
+    - versionName: projects/warrenburg-portfolio/secrets/SECURITY_ADMIN_UID/versions/latest
+      env: SECURITY_ADMIN_UID
+    - versionName: projects/warrenburg-portfolio/secrets/SECURITY_ADMIN_USERNAME/versions/latest
+      env: SECURITY_ADMIN_USERNAME
+

@@ -43,6 +43,11 @@ public class MockAuthService implements AuthService {
   }
 
   @Override
+  public String loginAdmin(String uid) {
+    return UUID.randomUUID().toString();
+  }
+
+  @Override
   public FirebaseUserDetails authenticate(String authToken) throws FirebaseAuthException {
 
     try {

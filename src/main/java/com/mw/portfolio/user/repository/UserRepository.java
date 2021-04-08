@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   @Query("select user.role from User user where user.uid = :uid")
   Optional<PrincipalRole> getUserRole(String uid);
+
+  User findFirstByRole(PrincipalRole role);
 }

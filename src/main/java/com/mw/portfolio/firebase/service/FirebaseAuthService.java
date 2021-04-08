@@ -32,6 +32,11 @@ public class FirebaseAuthService implements AuthService {
   private final UserRecordToUserDetailsConverter converter;
 
   @Override
+  public String loginAdmin(String uid) throws FirebaseAuthException {
+    return auth.createCustomToken(uid);
+  }
+
+  @Override
   public FirebaseUserDetails authenticate(String authToken) throws FirebaseAuthException {
 
     val decodedToken = auth.verifyIdToken(authToken, true);

@@ -1,10 +1,14 @@
 package com.mw.portfolio.exception.controller;
 
+import static java.lang.String.format;
+import static java.util.Objects.isNull;
 import static org.springframework.http.HttpStatus.*;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.mw.portfolio.email.exception.EmailException;
 import com.mw.portfolio.exception.model.ErrorMessage;
 import lombok.extern.log4j.Log4j2;
+import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -35,7 +39,7 @@ public class GlobalControllerAdvice {
   }
 
   @ResponseStatus(UNAUTHORIZED)
-  @ExceptionHandler(AuthenticationException.class)
+  @ExceptionHandler({AuthenticationException.class, FirebaseAuthException.class})
   public ErrorMessage handleAuthenticationExceptions(final AuthenticationException e, final HttpServletRequest request) {
     return buildAndLogErrorMessage(e, request, UNAUTHORIZED);
   }
@@ -53,9 +57,11 @@ public class GlobalControllerAdvice {
   }
 
   private ErrorMessage buildAndLogErrorMessage(final Exception e, final HttpServletRequest request, final HttpStatus status) {
-    log.error("Exception caught by controller advice.  [type]: {} [requestPath]: {} [message]: {}", e.getClass().getSimpleName(), request.getRequestURI(), e.getMessage());
+    val exceptionName = e.getClass().getSimpleName();
+    val message = isNull(e.getMessage()) ? format("The call resulted in a %s", exceptionName) : e.getMessage();
+    log.error("Exception caught by controller advice.  [type]: {} [requestPath]: {} [message]: {}", exceptionName, request.getRequestURI(), message);
     return ErrorMessage.builder()
-        .message(e.getMessage())
+        .message(message)
         .status(status.value())
         .timestamp(LocalDateTime.now())
         .path(request.getRequestURI())

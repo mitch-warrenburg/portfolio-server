@@ -18,6 +18,9 @@ import javax.validation.constraints.NotNull;
 @ConfigurationProperties("security")
 public class SecurityProperties {
 
+  @NotBlank
+  private String chatSessionId;
+
   @Valid
   @NotNull
   private PrivilegedUser admin;
@@ -35,6 +38,9 @@ public class SecurityProperties {
 
     @NotBlank
     private String uid;
+
+    @NotBlank
+    private String username;
 
     @NotBlank
     private String password;
