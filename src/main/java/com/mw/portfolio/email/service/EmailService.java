@@ -27,7 +27,7 @@ public class EmailService {
 
   private static final int MAX_EMAIL_COUNT = 25;
   private static final String ENDPOINT = "mail/send";
-  private static final String CONTENT_TYPE = "text/plain";
+  private static final String CONTENT_TYPE = "text/html";
   private static final String EMAIL_SUBJECT_FORMAT = "%s: %s";
   private static final String SUCCESS_MESSAGE = "Successfully submitted email to external API.";
   private static final String EMAIL_BODY_FORMAT = "<p>Company: %s\nName: %s\nEmail: %s\nPhone: %s\n\n\n%s</p><br/><br/>";

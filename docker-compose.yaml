@@ -3,6 +3,8 @@ services:
   postgres:
     image: postgres:12.4
     container_name: portfolio-db
+    networks:
+      - default
     env_file:
       - db.env
     ports:
@@ -11,6 +13,8 @@ services:
       - postgres-data:/var/lib/postgresql/data/
   portfolio:
     container_name: portfolio-server
+    networks:
+      - default
     depends_on:
       - postgres
     env_file:
@@ -24,7 +28,6 @@ services:
       - ./key.json:/app/key.json
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/portfolio-db
-
 
 volumes:
   postgres-data:

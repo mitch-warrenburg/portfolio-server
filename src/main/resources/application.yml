@@ -39,9 +39,15 @@ email:
     name: Philip N. Ossem
     address: recipient@mock-domain.com
 security:
+  chat-session-id: admin-session
   admin:
     uid: admin
     password: admin
+    username: admin
   system:
     uid: system
     password: system
+    username: system
+
+logging.level:
+  org.springframework.security: DEBUG

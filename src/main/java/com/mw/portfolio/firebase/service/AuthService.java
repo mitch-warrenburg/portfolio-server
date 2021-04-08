@@ -6,6 +6,9 @@ import com.mw.portfolio.security.model.FirebaseUserDetails;
 import javax.servlet.http.Cookie;
 
 public interface AuthService {
+
+  String loginAdmin(String uid) throws FirebaseAuthException;
+
   FirebaseUserDetails authenticate(String authToken) throws FirebaseAuthException;
 
   FirebaseUserDetails verifySession(String cookie) throws FirebaseAuthException;

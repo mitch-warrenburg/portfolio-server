@@ -32,11 +32,11 @@ public class AuthProcessingFilter extends AbstractAuthenticationProcessingFilter
   private final RequestMatcher tokenAuthMatcher;
 
   public AuthProcessingFilter(RequestMatcher tokenAuthMatcher,
-                              RequestMatcher allAuthenticatedPathsMatcher,
+                              RequestMatcher firebaseAuthPathsMatcher,
                               AuthenticationManager authenticationManager,
                               AuthenticationSuccessHandler authSuccessHandler,
                               AuthenticationFailureHandler authFailureHandler) {
-    super(allAuthenticatedPathsMatcher, authenticationManager);
+    super(firebaseAuthPathsMatcher, authenticationManager);
     super.setAuthenticationSuccessHandler(authSuccessHandler);
     super.setAuthenticationFailureHandler(authFailureHandler);
     this.tokenAuthMatcher = tokenAuthMatcher;

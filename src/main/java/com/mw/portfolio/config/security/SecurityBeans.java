@@ -1,5 +1,7 @@
 package com.mw.portfolio.config.security;
 
+import static java.util.stream.Collectors.toList;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,15 +16,16 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import java.util.stream.Stream;
+
 @Configuration
 public class SecurityBeans {
 
   @Bean
-  public RequestMatcher allAuthenticatedPathsMatcher() {
-    return new AndRequestMatcher(
-        new NegatedRequestMatcher(new AntPathRequestMatcher("/actuator/**")),
-        new NegatedRequestMatcher(new AntPathRequestMatcher("/api/v1/admin/**"))
-    );
+  public RequestMatcher firebaseAuthPathsMatcher() {
+    return new AndRequestMatcher(Stream.of("/actuator/**", "/api/v1/admin/**", "/api/v1/chat/default-user")
+        .map(path -> new NegatedRequestMatcher(new AntPathRequestMatcher(path)))
+        .collect(toList()));
   }
 
   @Bean
