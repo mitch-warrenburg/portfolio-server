@@ -44,7 +44,7 @@ dependencies {
 flyway {
     user = 'admin'
     password = 'admin'
-    url = 'jdbc:postgresql://home-base.local:5432/portfolio-db'
+    url = 'jdbc:postgresql://localhost:5432/portfolio'
 }
 
 jib {

@@ -48,6 +48,3 @@ security:
     uid: system
     password: system
     username: system
-
-logging.level:
-  org.springframework.security: DEBUG

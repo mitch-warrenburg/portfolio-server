@@ -1,6 +1,7 @@
 package com.mw.portfolio.user.service;
 
-import static com.mw.portfolio.security.model.PrincipalRole.*;
+import static com.mw.portfolio.security.model.PrincipalRole.ROLE_ADMIN;
+import static com.mw.portfolio.security.model.PrincipalRole.ROLE_ANONYMOUS;
 
 import com.mw.portfolio.security.model.FirebaseUserDetails;
 import com.mw.portfolio.user.entity.User;
@@ -42,7 +43,7 @@ public class UserService {
     val user = getUser(request.getUid());
 
     return userRepository.saveAndFlush(user.toBuilder()
-        .role(ROLE_USER)
+        .role(user.getRole())
         .email(request.getEmail())
         .company(request.getCompany())
         .username(request.getUsername())

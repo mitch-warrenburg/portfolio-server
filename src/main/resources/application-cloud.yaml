@@ -1,1 +1,4 @@
-spring.flyway.clean-on-validation-error: false
+spring:
+  datasource:
+    url: jdbc:postgresql://portfolio-db-postgresql:5432/portfolio
+  flyway.clean-on-validation-error: false

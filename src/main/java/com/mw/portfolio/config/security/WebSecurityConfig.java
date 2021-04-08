@@ -17,8 +17,8 @@ import javax.servlet.Filter;
 
 @Log4j2
 @Configuration
-@AllArgsConstructor
 @EnableWebSecurity
+@AllArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true, proxyTargetClass = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
