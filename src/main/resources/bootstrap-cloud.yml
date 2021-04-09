@@ -1,0 +1,5 @@
+spring.cloud.gcp:
+  core.enabled: false
+  firestore.enabled: false
+  secretmanager.enabled: true
+  project-id: warrenburg-portfolio

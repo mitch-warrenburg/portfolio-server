@@ -1,0 +1,24 @@
+spring:
+  flyway.clean-on-validation-error: false
+  datasource:
+    password: "${sm://DB_PASSWORD}"
+    username: "${sm://DB_USERNAME}"
+    url: jdbc:postgresql://portfolio-db-postgresql:5432/portfolio
+email:
+  api-key: "${sm://EMAIL_API_KEY}"
+  sender:
+    name: "${sm://EMAIL_SENDER_NAME}"
+    address: "${sm://EMAIL_SENDER_ADDRESS}"
+  recipient:
+    name: "${sm://EMAIL_RECIPIENT_NAME}"
+    address: "${sm://EMAIL_RECIPIENT_ADDRESS}"
+security:
+  chat-session-id: "${sm://CHAT_SESSION_ID}"
+  admin:
+    uid: "${sm://SECURITY_ADMIN_UID}"
+    password: "${sm://SECURITY_ADMIN_PASSWORD}"
+    username: "${sm://SECURITY_ADMIN_USERNAME}"
+  system:
+    uid: "${sm://SECURITY_SYSTEM_UID}"
+    password: "${sm://SECURITY_SYSTEM_PASSWORD}"
+    username: "${sm://SECURITY_SYSTEM_USERNAME}"

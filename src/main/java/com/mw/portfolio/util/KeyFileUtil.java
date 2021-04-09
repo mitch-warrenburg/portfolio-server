@@ -15,6 +15,7 @@ public class KeyFileUtil {
   @SneakyThrows
   public static void writeGcpKeyFile() {
     if ("cloud".equals(System.getenv("SPRING_PROFILES_ACTIVE"))) {
+
       val encodedFileContents = System.getenv("ENCODED_GOOGLE_APPLICATION_CREDENTIALS");
 
       if (isNull(encodedFileContents)) {
@@ -22,7 +23,7 @@ public class KeyFileUtil {
       }
 
       val fileContents = new String(Base64.getDecoder().decode(encodedFileContents));
-      File keyFile = new File("/app/key.json");
+      File keyFile = new File("/tmp/key.json");
 
       touch(keyFile);
       writeStringToFile(keyFile, fileContents, "UTF-8");

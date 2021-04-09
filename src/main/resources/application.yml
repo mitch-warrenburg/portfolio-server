@@ -19,7 +19,7 @@ spring:
   datasource:
     username: admin
     password: admin
-    url: jdbc:postgresql://localhost:5432/portfolio-db
+    url: jdbc:postgresql://localhost:5432/portfolio
 
 management:
   endpoint.health:

@@ -25,8 +25,8 @@ public class PortfolioApplication {
   private final EmailProperties properties;
 
   public static void main(String[] args) {
-    TimeZone.setDefault(getTimeZone("America/Los_Angeles"));
     writeGcpKeyFile();
+    TimeZone.setDefault(getTimeZone("America/Los_Angeles"));
     SpringApplication.run(PortfolioApplication.class, args);
   }
 
