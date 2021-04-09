@@ -17,9 +17,9 @@ public class AdminUserDetailsService implements UserDetailsService {
   public final UserToAdminUserDetailsConverter converter;
 
   @Override
-  public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     try {
-      val user = userService.getUser(uid);
+      val user = userService.getUserByUsername(username);
       return converter.convert(user);
     } catch (Exception e) {
       throw new UsernameNotFoundException("Admin user not found.");

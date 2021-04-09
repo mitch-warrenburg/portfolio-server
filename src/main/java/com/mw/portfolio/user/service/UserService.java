@@ -37,6 +37,11 @@ public class UserService {
         .orElseThrow(EntityNotFoundException::new);
   }
 
+  public User getUserByUsername(String username) {
+    return userRepository.findByUsername(username)
+        .orElseThrow(EntityNotFoundException::new);
+  }
+
   @PreAuthorize("#request.uid == authentication.name")
   public User updateUser(@P("request") UserUpdateRequest request) {
 

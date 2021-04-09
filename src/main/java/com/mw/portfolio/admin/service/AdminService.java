@@ -46,7 +46,7 @@ public class AdminService {
   }
 
   @EventListener(ApplicationReadyEvent.class)
-  public void createAdminUserIfNotPresent() {
+  public void createPrivilegedUserIfNotPresent() {
     createOrUpdatePrivilegedUser(properties.getAdmin(), ROLE_ADMIN);
     createOrUpdatePrivilegedUser(properties.getSystem(), ROLE_SYSTEM);
   }

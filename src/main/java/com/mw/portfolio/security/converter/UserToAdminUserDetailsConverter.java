@@ -11,9 +11,9 @@ public class UserToAdminUserDetailsConverter implements Converter<User, AdminUse
   @Override
   public AdminUserDetails convert(User user) {
     return AdminUserDetails.builder()
-        .authority(new SimpleGrantedAuthority(user.getRole().toString()))
         .username(user.getUsername())
         .password(user.getPassword())
+        .authority(new SimpleGrantedAuthority(user.getRole().toString()))
         .build();
   }
 }

@@ -42,6 +42,6 @@ substitutions:
   _OUTPUT_BUCKET_PATH: warrenburg-portfolio_cloudbuild/deploy
 availableSecrets:
   secretManager:
-    - versionName: projects/warrenburg-portfolio/secrets/ENCODED_GOOGLE_APPLICATION_CREDENTIALS/versions/latest
+    - versionName: projects/warrenburg-portfolio/secrets/GCP_CREDS/versions/latest
       env: ENCODED_GOOGLE_APPLICATION_CREDENTIALS
 
