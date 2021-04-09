@@ -21,4 +21,9 @@ public class UserController {
   public User updateUser(@Valid @RequestBody UserUpdateRequest request) {
     return userService.updateUser(request);
   }
+
+  @GetMapping("/{uid}")
+  public User getUser(@PathVariable String uid) {
+    return userService.getAuthorizedUser(uid);
+  }
 }
