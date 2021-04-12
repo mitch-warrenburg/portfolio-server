@@ -1,4 +1,4 @@
-package com.mw.portfolio.user.model;
+package com.mw.portfolio.scheduling.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -13,11 +14,17 @@ import javax.validation.constraints.NotBlank;
 @Validated
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserUpdateRequest {
+public class ScheduledEventRequest {
+
+  @Email
+  private String email;
 
   @NotBlank
   private String uid;
-  private String email;
-  private String company;
-  private String username;
+
+  @NotBlank
+  private String start;
+
+  @NotBlank
+  private String end;
 }

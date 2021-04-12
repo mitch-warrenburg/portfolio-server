@@ -1,5 +1,5 @@
 spring:
-  flyway.clean-on-validation-error: false
+  flyway.clean-on-validation-error: true
   datasource:
     password: "${sm://DB_PASSWORD}"
     username: "${sm://DB_USERNAME}"

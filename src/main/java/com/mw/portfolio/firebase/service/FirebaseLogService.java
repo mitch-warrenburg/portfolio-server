@@ -22,7 +22,7 @@ public class FirebaseLogService {
   }
 
   public void logSuccess(String successType, UserRecord userRecord, FirebaseToken decodedToken) {
-    log.info("{} success. [uid]: {} [phoneNumber]: {} [authTime]: {} [expiryTime]: {}", successType, userRecord.getUid(), userRecord.getUid(), claimToDateString("auth_time", decodedToken), claimToDateString("exp", decodedToken));
+    log.info("{} success. [uid]: {} [phoneNumber]: {} [authTime]: {} [expiryTime]: {}", successType, userRecord.getUid(), userRecord.getPhoneNumber(), claimToDateString("auth_time", decodedToken), claimToDateString("exp", decodedToken));
   }
 
   public void logSuccess(String successType, UserRecord userRecord) {

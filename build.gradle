@@ -79,7 +79,7 @@ dockerCompose {
 
 task runPostgres(type: Exec) {
     workingDir rootDir
-    commandLine 'docker-compose', 'run', '-d', '--service-ports', 'postgres'
+    commandLine 'docker-compose', 'run', '-d', '--service-ports', 'portfolio-db'
 }
 
 test { useJUnitPlatform() }

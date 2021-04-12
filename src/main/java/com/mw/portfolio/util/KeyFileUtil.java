@@ -14,19 +14,17 @@ public class KeyFileUtil {
 
   @SneakyThrows
   public static void writeGcpKeyFile() {
-    if ("cloud".equals(System.getenv("SPRING_PROFILES_ACTIVE"))) {
 
-      val encodedFileContents = System.getenv("ENCODED_GOOGLE_APPLICATION_CREDENTIALS");
+    val encodedFileContents = System.getenv("ENCODED_GOOGLE_APPLICATION_CREDENTIALS");
 
-      if (isNull(encodedFileContents)) {
-        throw new RuntimeException("GOOGLE_APPLICATION_CREDENTIALS not found.");
-      }
-
-      val fileContents = new String(Base64.getDecoder().decode(encodedFileContents));
-      File keyFile = new File("/tmp/key.json");
-
-      touch(keyFile);
-      writeStringToFile(keyFile, fileContents, "UTF-8");
+    if (isNull(encodedFileContents)) {
+      throw new RuntimeException("GOOGLE_APPLICATION_CREDENTIALS not found.");
     }
+
+    val fileContents = new String(Base64.getDecoder().decode(encodedFileContents));
+    File keyFile = new File("/tmp/key.json");
+
+    touch(keyFile);
+    writeStringToFile(keyFile, fileContents, "UTF-8");
   }
 }

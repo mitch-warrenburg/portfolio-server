@@ -8,4 +8,6 @@ public class Constants {
   public static final String EXPIRED_TOKEN_EXCEPTION_MSG = "The authorization token is expired.";
   public static final String INVALID_TOKEN_EXCEPTION_MSG = "The authorization token is invalid.";
   public static final String MISSING_COOKIE_EXCEPTION_MSG = "The session cookie is not present in the Authentication.";
+  public static final String USER_RESOURCE_MISMATCH_EXCEPTION_MSG = "The requested resource does not belong to the current user.";
+
 }

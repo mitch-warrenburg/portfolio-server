@@ -19,6 +19,7 @@ public class FirebaseConfig {
 
   private static final String FIREBASE_EXECUTOR_NAME = "firebase-exec";
   private static final String FIREBASE_THREAD_PREFIX = "firebase-custom";
+  private static final String FIREBASE_SERVICE_ACCOUNT = "firebase-adminsdk-4ayip@warrenburg-portfolio.iam.gserviceaccount.com";
 
   @Bean
   public ThreadPoolTaskExecutor firebaseThreadPoolExecutor() {
@@ -37,8 +38,9 @@ public class FirebaseConfig {
   @Bean
   public FirebaseApp firebaseApp(ThreadManager customThreadManager) throws IOException {
     return FirebaseApp.initializeApp(FirebaseOptions.builder()
-        .setThreadManager(customThreadManager)
         .setProjectId("warrenburg-portfolio")
+        .setThreadManager(customThreadManager)
+        .setServiceAccountId(FIREBASE_SERVICE_ACCOUNT)
         .setCredentials(GoogleCredentials.getApplicationDefault())
         .build());
   }

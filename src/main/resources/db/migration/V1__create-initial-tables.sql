@@ -50,18 +50,17 @@ CREATE TABLE client_metadata
     modified_ts          TIMESTAMP
 );
 
-CREATE TABLE schedule_event
+CREATE TABLE scheduled_event
 (
     id          SERIAL PRIMARY KEY,
-    user_id     INTEGER REFERENCES authenticated_user,
-    start       TIMESTAMP NOT NULL,
-    "end"       TIMESTAMP NOT NULL,
-    description TEXT      NOT NULL,
+    uid         TEXT      NOT NULL,
+    start_date  TEXT      NOT NULL,
+    end_date    TEXT      NOT NULL,
     created_by  TEXT      NOT NULL DEFAULT 'SYSTEM',
     modified_by TEXT,
     created_ts  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modified_ts TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES authenticated_user (id)
+    FOREIGN KEY (uid) REFERENCES authenticated_user (uid)
 );
 
-CREATE UNIQUE INDEX schedule_user_id_index ON schedule_event (user_id, id);
+CREATE INDEX scheduled_event_uid_to_user_uid_index ON scheduled_event (uid, uid);

@@ -16,6 +16,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @Configuration
@@ -23,9 +24,11 @@ public class SecurityBeans {
 
   @Bean
   public RequestMatcher firebaseAuthPathsMatcher() {
-    return new AndRequestMatcher(Stream.of("/actuator/**", "/api/v1/admin/**", "/api/v1/chat/default-user")
+    List<RequestMatcher> negatedPaths = Stream.of("/actuator/**", "/api/v1/admin/**", "/api/v1/chat/default-user")
         .map(path -> new NegatedRequestMatcher(new AntPathRequestMatcher(path)))
-        .collect(toList()));
+        .collect(toList());
+    negatedPaths.add(new NegatedRequestMatcher(new AntPathRequestMatcher("/api/v1/scheduling/events", "GET")));
+    return new AndRequestMatcher(negatedPaths);
   }
 
   @Bean

@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
           .disable()
         .httpBasic(withDefaults())
         .authorizeRequests()
-          .antMatchers("/actuator/health", "/api/v1/chat/default-user")
+          .antMatchers("/actuator/health", "/api/v1/chat/default-user", "/api/v1/scheduling/events")
             .permitAll()
           .antMatchers("/api/v1/admin/**", "/actuator/**")
             .authenticated()

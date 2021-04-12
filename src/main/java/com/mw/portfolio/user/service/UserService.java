@@ -2,6 +2,7 @@ package com.mw.portfolio.user.service;
 
 import static com.mw.portfolio.security.model.PrincipalRole.ROLE_ADMIN;
 import static com.mw.portfolio.security.model.PrincipalRole.ROLE_ANONYMOUS;
+import static java.util.Objects.nonNull;
 
 import com.mw.portfolio.security.model.FirebaseUserDetails;
 import com.mw.portfolio.user.entity.User;
@@ -25,7 +26,7 @@ import javax.persistence.EntityNotFoundException;
 @AllArgsConstructor
 public class UserService {
 
-  private final UserRepository userRepository;
+  private final UserRepository repository;
 
   @PreAuthorize("#uid == authentication.name")
   public User getAuthorizedUser(@P("uid") String uid) {
@@ -33,12 +34,12 @@ public class UserService {
   }
 
   public User getUser(String uid) {
-    return userRepository.findByUid(uid)
+    return repository.findByUid(uid)
         .orElseThrow(EntityNotFoundException::new);
   }
 
   public User getUserByUsername(String username) {
-    return userRepository.findByUsername(username)
+    return repository.findByUsername(username)
         .orElseThrow(EntityNotFoundException::new);
   }
 
@@ -47,11 +48,11 @@ public class UserService {
 
     val user = getUser(request.getUid());
 
-    return userRepository.saveAndFlush(user.toBuilder()
+    return repository.saveAndFlush(user.toBuilder()
         .role(user.getRole())
-        .email(request.getEmail())
-        .company(request.getCompany())
-        .username(request.getUsername())
+        .email(nonNull(request.getEmail()) ? request.getEmail() : user.getEmail())
+        .company(nonNull(request.getCompany()) ? request.getCompany() : user.getCompany())
+        .username(nonNull(request.getUsername()) ? request.getUsername() : user.getUsername())
         .build());
   }
 
@@ -61,22 +62,22 @@ public class UserService {
   }
 
   public void saveUser(User user) {
-    userRepository.save(user);
+    repository.save(user);
   }
 
   public GrantedAuthority getUserAuthorityRole(String uid) {
-    val role = userRepository.getUserRole(uid)
+    val role = repository.getUserRole(uid)
         .orElse(ROLE_ANONYMOUS);
 
     return new SimpleGrantedAuthority(role.toString());
   }
 
   public void createUserIfNotPresent(FirebaseUserDetails userDetails) {
-    if (!userRepository.existsByUid(userDetails.getUid())) {
+    if (!repository.existsByUid(userDetails.getUid())) {
 
       log.info("User not found.  Saving new authenticated user record. [uid]: {}", userDetails.getUid());
 
-      userRepository.saveAndFlush(User.builder()
+      repository.saveAndFlush(User.builder()
           .uid(userDetails.getUid())
           .phoneNumber(userDetails.getPhoneNumber())
           .build());
@@ -84,10 +85,14 @@ public class UserService {
   }
 
   public boolean doesUserExist(String uid) {
-    return userRepository.existsByUid(uid);
+    return repository.existsByUid(uid);
   }
 
   public User getDefaultChatUser() {
-    return userRepository.findFirstByRole(ROLE_ADMIN);
+    return repository.findFirstByRole(ROLE_ADMIN);
+  }
+
+  public void updateEmail(String uid, String email) {
+    repository.updateEmail(uid, email);
   }
 }

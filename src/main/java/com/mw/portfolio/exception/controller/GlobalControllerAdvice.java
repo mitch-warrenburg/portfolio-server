@@ -40,7 +40,7 @@ public class GlobalControllerAdvice {
 
   @ResponseStatus(UNAUTHORIZED)
   @ExceptionHandler({AuthenticationException.class, FirebaseAuthException.class})
-  public ErrorMessage handleAuthenticationExceptions(final AuthenticationException e, final HttpServletRequest request) {
+  public ErrorMessage handleAuthenticationExceptions(final Exception e, final HttpServletRequest request) {
     return buildAndLogErrorMessage(e, request, UNAUTHORIZED);
   }
 
