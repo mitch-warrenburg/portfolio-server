@@ -30,7 +30,7 @@ public class EmailService {
   private static final String CONTENT_TYPE = "text/html";
   private static final String EMAIL_SUBJECT_FORMAT = "%s: %s";
   private static final String SUCCESS_MESSAGE = "Successfully submitted email to external API.";
-  private static final String EMAIL_BODY_FORMAT = "<p>Company: %s\nName: %s\nEmail: %s\nPhone: %s\n\n\n%s</p><br/><br/>";
+  private static final String EMAIL_BODY_FORMAT = "<p>Company: %s<br/>Name: %s<br/>Email: %s<br/>Phone: %s<br/><br/><br/>%s</p><br/><br/>";
 
   private final SendGrid sendGrid;
   private final Email senderEmail;
