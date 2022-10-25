@@ -18,13 +18,20 @@ spec:
       containers:
         - name: portfolio-server-container
           image: gcr.io/warrenburg-portfolio/portfolio-server:latest
+          resources:
+            limits:
+              cpu: 250m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 512Mi
           readinessProbe:
             failureThreshold: 3
             httpGet:
               port: 8080
               path: /actuator/health
           livenessProbe:
-            periodSeconds: 15
+            periodSeconds: 300
             httpGet:
               port: 8080
               path: /actuator/health
